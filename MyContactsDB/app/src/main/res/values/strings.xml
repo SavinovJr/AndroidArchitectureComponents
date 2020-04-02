@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MyContactsDB</string>
+    <string name="action_settings">Settings</string>
+</resources>

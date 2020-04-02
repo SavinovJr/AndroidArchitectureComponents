@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Data Binding Demo</string>
+    <string name="title_activity_ok">OkActivity</string>
+</resources>
