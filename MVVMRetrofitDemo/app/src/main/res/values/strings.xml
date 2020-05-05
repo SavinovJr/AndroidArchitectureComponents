@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MVVM Retrofit Demo</string>
+    <string name="api_key">788ef27e990cb9ebd1f22a8e69544687</string>
+</resources>
