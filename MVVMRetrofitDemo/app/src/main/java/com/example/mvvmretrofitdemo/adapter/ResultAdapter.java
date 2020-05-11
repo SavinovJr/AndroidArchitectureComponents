@@ -9,11 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mvvmretrofitdemo.MovieDetailsActivity;
 import com.example.mvvmretrofitdemo.R;
+import com.example.mvvmretrofitdemo.databinding.PopularMovieListItemBinding;
 import com.example.mvvmretrofitdemo.model.Result;
 
 import java.util.List;
@@ -31,19 +33,18 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.PopularMov
     @NonNull
     @Override
     public PopularMovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.popular_movie_list_item, parent, false);
-        return new PopularMovieViewHolder(view);
+        PopularMovieListItemBinding popularMovieListItemBinding =
+                DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                                        R.layout.popular_movie_list_item, parent,
+                                        false);
+        return new PopularMovieViewHolder(popularMovieListItemBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PopularMovieViewHolder holder, int position) {
+        Result result = popularList.get(position);
+        holder.listItemBinding.setResult(result);
 
-        holder.titleTextView.setText(popularList.get(position).getOriginalTitle());
-        holder.popularityTextView.setText(String.valueOf(popularList.get(position).getPopularity()));
-
-        String imagePath = "https://image.tmdb.org/t/p/w500/" + popularList.get(position).getPosterPath();
-        Glide.with(context).load(imagePath).placeholder(context.getDrawable(R.drawable.original))
-             .into(holder.movieImageView);
     }
 
     @Override
@@ -53,16 +54,11 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.PopularMov
 
     class PopularMovieViewHolder extends RecyclerView.ViewHolder {
 
-        TextView titleTextView;
-        TextView popularityTextView;
-        ImageView movieImageView;
+        private PopularMovieListItemBinding listItemBinding;
 
-        public PopularMovieViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            movieImageView = itemView.findViewById(R.id.movie_image_view);
-            titleTextView = itemView.findViewById(R.id.title_text_view);
-            popularityTextView = itemView.findViewById(R.id.popularity_text_view);
+        public PopularMovieViewHolder(@NonNull PopularMovieListItemBinding listItemBinding) {
+            super(listItemBinding.getRoot());
+            this.listItemBinding = listItemBinding;
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

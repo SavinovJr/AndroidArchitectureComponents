@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.mvvmretrofitdemo.adapter.ResultAdapter;
+import com.example.mvvmretrofitdemo.databinding.ActivityMainBinding;
 import com.example.mvvmretrofitdemo.model.Result;
 import com.example.mvvmretrofitdemo.viewmodel.MainActivityViewModel;
 
@@ -24,12 +26,14 @@ public class MainActivity extends AppCompatActivity {
     private ResultAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private MainActivityViewModel mainActivityViewModel;
+    private ActivityMainBinding activityMainBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh);
+        activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        swipeRefreshLayout = activityMainBinding.swipeRefresh;
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fillRecyclerView() {
-        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = activityMainBinding.recyclerView;
         recyclerView.setHasFixedSize(true);
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {

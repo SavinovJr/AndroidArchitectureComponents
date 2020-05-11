@@ -1,44 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:bind="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <data>
+
+        <variable
+            name="result"
+            type="com.example.mvvmretrofitdemo.model.Result" />
+    </data>
+
+    <ScrollView
 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:context=".MovieDetailsActivity">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/poster_image_view"
+        <LinearLayout
+
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:scaleType="centerInside" />
-
-        <TextView
-            android:id="@+id/title_text_view"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            tools:context=".MovieDetailsActivity">
 
-        <TextView
-            android:id="@+id/vote_count_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="italic" />
+            <ImageView
+                android:id="@+id/poster_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                bind:posterPath="@{result.posterPath}"
+                android:scaleType="centerInside" />
 
-        <TextView
-            android:id="@+id/overview_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textStyle="normal" />
+            <TextView
+                android:id="@+id/title_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{result.originalTitle}"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-    </LinearLayout>
-</ScrollView>
+            <TextView
+                android:id="@+id/vote_count_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{Integer.toString(result.voteCount)}"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/overview_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{result.overview}"
+                android:textSize="12sp"
+                android:textStyle="normal" />
+
+        </LinearLayout>
+    </ScrollView>
+</layout>
