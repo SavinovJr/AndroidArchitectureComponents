@@ -3,31 +3,25 @@ package com.example.mvvmretrofitdemo.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.mvvmretrofitdemo.MovieDetailsActivity;
 import com.example.mvvmretrofitdemo.R;
 import com.example.mvvmretrofitdemo.databinding.PopularMovieListItemBinding;
 import com.example.mvvmretrofitdemo.model.Result;
 
-import java.util.List;
+public class ResultAdapter extends PagedListAdapter<Result, ResultAdapter.PopularMovieViewHolder> {
 
-public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.PopularMovieViewHolder> {
-
-    private List<Result> popularList;
     private Context context;
 
-    public ResultAdapter(Context context, List<Result> popularList) {
+    public ResultAdapter(Context context) {
+        super(Result.CALLBACK);
         this.context = context;
-        this.popularList = popularList;
     }
 
     @NonNull
@@ -42,14 +36,9 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.PopularMov
 
     @Override
     public void onBindViewHolder(@NonNull PopularMovieViewHolder holder, int position) {
-        Result result = popularList.get(position);
+        Result result = getItem(position);
         holder.listItemBinding.setResult(result);
 
-    }
-
-    @Override
-    public int getItemCount() {
-        return popularList.size();
     }
 
     class PopularMovieViewHolder extends RecyclerView.ViewHolder {
@@ -60,16 +49,13 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.PopularMov
             super(listItemBinding.getRoot());
             this.listItemBinding = listItemBinding;
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        Result result = popularList.get(position);
-                        Intent intent = new Intent(context, MovieDetailsActivity.class);
-                        intent.putExtra("movieData", result);
-                        context.startActivity(intent);
-                    }
+            itemView.setOnClickListener(view -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    Result result = getItem(position);
+                    Intent intent = new Intent(context, MovieDetailsActivity.class);
+                    intent.putExtra("movieData", result);
+                    context.startActivity(intent);
                 }
             });
         }

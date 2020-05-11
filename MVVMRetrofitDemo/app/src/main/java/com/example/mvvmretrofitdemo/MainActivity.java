@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,11 +18,9 @@ import com.example.mvvmretrofitdemo.databinding.ActivityMainBinding;
 import com.example.mvvmretrofitdemo.model.Result;
 import com.example.mvvmretrofitdemo.viewmodel.MainActivityViewModel;
 
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
-    private List<Result> moviePopularList;
+    private PagedList<Result> moviePopularList;
     private RecyclerView recyclerView;
     private ResultAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -48,11 +47,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getPopularMovies() {
-        mainActivityViewModel.getAllMovies().observe(this, new Observer<List<Result>>() {
+        mainActivityViewModel.getPagedListLiveData().observe(this, new Observer<PagedList<Result>>() {
             @Override
-            public void onChanged(List<Result> results) {
+            public void onChanged(PagedList<Result> results) {
                 moviePopularList = results;
-                swipeRefreshLayout.setRefreshing(false);
                 fillRecyclerView();
             }
         });
@@ -69,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
         }
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        adapter = new ResultAdapter(this, moviePopularList);
+        adapter = new ResultAdapter(this);
+        adapter.submitList(moviePopularList);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
